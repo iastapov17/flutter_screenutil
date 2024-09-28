@@ -78,7 +78,6 @@ class ScreenUtilInit extends StatefulWidget {
     this.enableScaleText,
     this.responsiveWidgets,
     this.excludeWidgets,
-    this.fontSizeResolver = FontSizeResolvers.width,
   }) : super(key: key);
 
   final ScreenUtilInitBuilder? builder;
@@ -90,7 +89,6 @@ class ScreenUtilInit extends StatefulWidget {
   final bool Function()? enableScaleWH;
   final bool Function()? enableScaleText;
   final RebuildFactor rebuildFactor;
-  final FontSizeResolver fontSizeResolver;
 
   /// The [Size] of the device in the design draft, in dp
   final Size designSize;
@@ -101,7 +99,8 @@ class ScreenUtilInit extends StatefulWidget {
   State<ScreenUtilInit> createState() => _ScreenUtilInitState();
 }
 
-class _ScreenUtilInitState extends State<ScreenUtilInit> with WidgetsBindingObserver {
+class _ScreenUtilInitState extends State<ScreenUtilInit>
+    with WidgetsBindingObserver {
   final _canMarkedToBuild = HashSet<String>();
   final _excludedWidgets = HashSet<String>();
   MediaQueryData? _mediaQueryData;
@@ -114,7 +113,8 @@ class _ScreenUtilInitState extends State<ScreenUtilInit> with WidgetsBindingObse
       _canMarkedToBuild.addAll(widget.responsiveWidgets!);
     }
 
-    ScreenUtil.enableScale(enableWH: widget.enableScaleWH, enableText: widget.enableScaleText);
+    ScreenUtil.enableScale(
+        enableWH: widget.enableScaleWH, enableText: widget.enableScaleText);
 
     _validateSize().then(_screenSizeCompleter.complete);
 
@@ -186,7 +186,6 @@ class _ScreenUtilInitState extends State<ScreenUtilInit> with WidgetsBindingObse
         designSize: widget.designSize,
         splitScreenMode: widget.splitScreenMode,
         minTextAdapt: widget.minTextAdapt,
-        fontSizeResolver: widget.fontSizeResolver,
       );
 
       return widget.builder?.call(context, widget.child) ?? widget.child!;
@@ -200,7 +199,6 @@ class _ScreenUtilInitState extends State<ScreenUtilInit> with WidgetsBindingObse
           designSize: widget.designSize,
           splitScreenMode: widget.splitScreenMode,
           minTextAdapt: widget.minTextAdapt,
-          fontSizeResolver: widget.fontSizeResolver,
         );
 
         if (snapshot.connectionState == ConnectionState.done) {

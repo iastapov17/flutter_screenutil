@@ -10,8 +10,6 @@ import 'dart:ui' as ui show FlutterView;
 
 import 'package:flutter/widgets.dart';
 
-typedef FontSizeResolver = double Function(num fontSize, ScreenUtil instance);
-
 class ScreenUtil {
   static const Size defaultSize = Size(360, 690);
   static ScreenUtil _instance = ScreenUtil._();
@@ -29,7 +27,6 @@ class ScreenUtil {
   late bool _minTextAdapt;
   late MediaQueryData _data;
   late bool _splitScreenMode;
-  FontSizeResolver? fontSizeResolver;
 
   ScreenUtil._();
 
@@ -113,7 +110,6 @@ class ScreenUtil {
     Size? designSize,
     bool? splitScreenMode,
     bool? minTextAdapt,
-    FontSizeResolver? fontSizeResolver,
   }) {
     try {
       if (data != null)
@@ -139,7 +135,6 @@ class ScreenUtil {
             : Orientation.portrait);
 
     _instance
-      ..fontSizeResolver = fontSizeResolver ?? _instance.fontSizeResolver
       .._minTextAdapt = minTextAdapt ?? _instance._minTextAdapt
       .._splitScreenMode = splitScreenMode ?? _instance._splitScreenMode
       .._orientation = orientation;
@@ -153,7 +148,6 @@ class ScreenUtil {
     Size designSize = defaultSize,
     bool splitScreenMode = false,
     bool minTextAdapt = false,
-    FontSizeResolver? fontSizeResolver,
   }) {
     final view = View.maybeOf(context);
     return configure(
@@ -161,7 +155,6 @@ class ScreenUtil {
       designSize: designSize,
       splitScreenMode: splitScreenMode,
       minTextAdapt: minTextAdapt,
-      fontSizeResolver: fontSizeResolver,
     );
   }
 
@@ -170,7 +163,6 @@ class ScreenUtil {
     Size designSize = defaultSize,
     bool splitScreenMode = false,
     bool minTextAdapt = false,
-    FontSizeResolver? fontSizeResolver,
   }) {
     return ScreenUtil.ensureScreenSize().then((_) {
       return init(
@@ -178,7 +170,6 @@ class ScreenUtil {
         designSize: designSize,
         minTextAdapt: minTextAdapt,
         splitScreenMode: splitScreenMode,
-        fontSizeResolver: fontSizeResolver,
       );
     });
   }
@@ -255,8 +246,7 @@ class ScreenUtil {
   ///- [fontSize] UI设计上字体的大小,单位dp.
   ///Font size adaptation method
   ///- [fontSize] The size of the font on the UI design, in dp.
-  double setSp(num fontSize) =>
-      fontSizeResolver?.call(fontSize, _instance) ?? scaleText(fontSize);
+  double setSp(num fontSize) => scaleText(fontSize);
 
   DeviceType deviceType(BuildContext context) {
     var deviceType = DeviceType.web;
