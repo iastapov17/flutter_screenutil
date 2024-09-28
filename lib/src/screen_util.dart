@@ -149,9 +149,8 @@ class ScreenUtil {
     bool splitScreenMode = false,
     bool minTextAdapt = false,
   }) {
-    final view = View.maybeOf(context);
     return configure(
-      data: view != null ? MediaQueryData.fromView(view) : null,
+      data: MediaQuery.of(context),
       designSize: designSize,
       splitScreenMode: splitScreenMode,
       minTextAdapt: minTextAdapt,
